@@ -1,13 +1,19 @@
-import { useCallback, useRef, useState } from "react";
+import { useColorModeValue } from "@chakra-ui/react";
 import Link from "next/link";
+import { FC, useCallback, useRef, useState } from "react";
+import { API_ADDRESS } from "src/config";
+import { Hit, SearchResults } from "src/types/_generated_SearchResult";
 
-const Search = () => {
+const noExtension = (path: string) => path.replace(".md", "");
+
+const Search: FC = () => {
   const searchRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(false);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Hit[]>([]);
 
-  const searchEndpoint = (query: string) => `/api/search?q=${query}`;
+  const searchEndpoint = (query: string) =>
+    `${API_ADDRESS}/docs/search?q=${query}`;
 
   const onChange = useCallback((event) => {
     const query = event.target.value;
@@ -15,22 +21,12 @@ const Search = () => {
     if (query.length) {
       fetch(searchEndpoint(query))
         .then((res) => res.json())
-        .then((res) => {
-          res.results.sort(function (a: any, b: any) {
-            const indexA = a.title.toLowerCase().indexOf(query.toLowerCase());
-            const indexB = b.title.toLowerCase().indexOf(query.toLowerCase());
-            return indexB < indexA;
-          });
-          setResults(res.results);
+        .then((res: SearchResults) => {
+          setResults(res.hits);
         });
     } else {
       setResults([]);
     }
-  }, []);
-
-  const onFocus = useCallback(() => {
-    setActive(true);
-    window.addEventListener("click", onClick);
   }, []);
 
   const onClick = useCallback((event) => {
@@ -39,6 +35,11 @@ const Search = () => {
       window.removeEventListener("click", onClick);
     }
   }, []);
+
+  const onFocus = useCallback(() => {
+    setActive(true);
+    window.addEventListener("click", onClick);
+  }, [onClick]);
 
   return (
     <>
@@ -53,9 +54,9 @@ const Search = () => {
         />
         {active && results.length > 0 && (
           <ul className="results">
-            {results.map(({ id, title, url }) => (
-              <li className="result" key={id}>
-                <Link href={url} as={url}>
+            {results.map(({ url, title }) => (
+              <li className="result" key={url}>
+                <Link href={`/${noExtension(url)}`} as={`/${noExtension(url)}`}>
                   <a>{title}</a>
                 </Link>
               </li>
@@ -69,6 +70,7 @@ const Search = () => {
         }
 
         .search {
+          background-color: ${useColorModeValue('var(--chakra-colors-gray-50)', 'var(--chakra-colors-gray-800)')};
           border: 1px solid rgba(0, 0, 0, 0.3);
           border-top-width: 0px;
           box-sizing: border-box;
@@ -92,14 +94,14 @@ const Search = () => {
         }
 
         .result {
-          background: #fff;
+          background-color: ${useColorModeValue('var(--chakra-colors-gray-50)', 'var(--chakra-colors-gray-900)')};
           padding: 18px;
           border: 1px solid rgba(0, 0, 0, 0.3);
           border-top-width: 0px;
         }
 
         .result:hover {
-          background: #f0f0f0;
+          background-color: ${useColorModeValue('var(--chakra-colors-gray-100)', 'var(--chakra-colors-gray-700)')};
         }
       `}</style>
     </>

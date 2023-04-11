@@ -1,9 +1,10 @@
 import useSWR from "swr";
 
 import { apiSWR } from "src/fetcher/fetcher";
-import { GitHubLink } from "src/types/githubAuth";
-import { UserModel } from "src/types/user";
-import { APIError } from "src/types/error";
+import { Link } from "src/types/_generated_GitHub";
+import { User, UserSchema } from "src/types/_generated_User";
+import { APIError } from "src/types/_generated_Error";
+import { LinkSchema } from "src/types/_generated_Discord";
 
 type Props = {
   bg: string;
@@ -12,15 +13,21 @@ type Props = {
 };
 
 const OAuthButton = ({ bg, icon, type }: Props) => {
-  const { data: link } = useSWR<GitHubLink>(`/auth/${type}/link`, apiSWR);
-  const { data, error } = useSWR<UserModel, APIError>("/users/self", apiSWR);
+  const { data: link } = useSWR<Link, APIError>(
+    `/auth/${type}/link`,
+    apiSWR({ schema: LinkSchema })
+  );
+  const { data, error } = useSWR<User, APIError>(
+    "/users/self",
+    apiSWR({ schema: UserSchema })
+  );
 
   let text: string;
   let href = link?.url;
 
   if (type === "github") {
     if (!error && data && data.github) {
-      text = data.github.username;
+      text = data.github;
       href = undefined;
     } else {
       text = "Login with GitHub";
@@ -28,7 +35,7 @@ const OAuthButton = ({ bg, icon, type }: Props) => {
     }
   } else if (type === "discord") {
     if (!error && data && data.discord) {
-      text = data.discord.username;
+      text = data.discord;
       href = undefined;
     } else {
       text = "Login with Discord";

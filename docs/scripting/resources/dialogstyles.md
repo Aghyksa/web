@@ -22,6 +22,8 @@ public OnDialogResponse( playerid, dialogid, response, listitem, inputtext[ ] )
 }
 ```
 
+---
+  
 ## Style 0: `DIALOG_STYLE_MSGBOX`
 
 ![](/images/dialogStyles/Dialog_style_msgbox.png)
@@ -32,7 +34,7 @@ Showing:
 
 - **\t** adds a TAB (more space).
 - **\n** creates a new line.
-- Color Embedding won't reset after \n \t
+- [Color embedding](colorslist#color-embedding) won't reset after **\n** or **\t**.
 
 :::
 
@@ -57,6 +59,8 @@ playerid = 0, dialogid = YOUR_DIALOGID, response = 1, listitem = -1, inputtext =
 playerid = 0, dialogid = YOUR_DIALOGID, response = 0, listitem = -1, inputtext = '' (size: 0)
 ```
 
+---
+  
 ## Style 1: `DIALOG_STYLE_INPUT`
 
 ![](/images/dialogStyles/Dialog_style_input.png)
@@ -67,7 +71,7 @@ Showing:
 
 - **\t** adds a TAB (more space).
 - **\n** creates a new line.
-- Color Embedding won't reset after \n \t
+- [Color embedding](colorslist#color-embedding) won't reset after **\n** or **\t**.
 
 :::
 
@@ -92,6 +96,8 @@ playerid = 0, dialogid = YOUR_DIALOGID, response = 1, listitem = -1, inputtext =
 playerid = 0, dialogid = YOUR_DIALOGID, response = 0, listitem = -1, inputtext = 'input' (size: 5)
 ```
 
+---
+  
 ## Style 2: `DIALOG_STYLE_LIST`
 
 ![](/images/dialogStyles/Dialog_style_list.png)
@@ -102,7 +108,7 @@ Showing:
 
 - **\t** adds a TAB (more space).
 - **\n** creates a new line.
-- Color Embedding won't reset after \n \t
+- [Color embedding](colorslist#color-embedding) won't reset after **\t**.
 
 :::
 
@@ -127,6 +133,8 @@ playerid = 0, dialogid = YOUR_DIALOGID, response = 1, listitem = 0, inputtext = 
 playerid = 0, dialogid = YOUR_DIALOGID, response = 0, listitem = 1, inputtext = 'Item 1' (size: 6)
 ```
 
+---
+  
 ## Style 3: `DIALOG_STYLE_PASSWORD`
 
 :::note
@@ -167,6 +175,8 @@ playerid = 0, dialogid = YOUR_DIALOGID, response = 1, listitem = -1, inputtext =
 playerid = 0, dialogid = YOUR_DIALOGID, response = 0, listitem = -1, inputtext = 'input' (size: 5)
 ```
 
+---
+  
 ## Style 4: `DIALOG_STYLE_TABLIST`
 
 :::tip This style was added in **SA-MP 0.3.7** and will not work in earlier versions!
@@ -187,7 +197,8 @@ Showing:
 
 - **\t** creates a new column.
 - **\n** creates a new list item.
-- Color embedding resets after \n and \t.
+- [Color embedding](colorslist#color-embedding) resets after **\n** and **\t**.
+- The first **info** row contains the header.
 
 :::
 
@@ -201,6 +212,7 @@ Pistol\t$1000\t50",
 
 :::note
 
+- **listitem** is the number of the selected item, starting from **0**.
 - **inputtext** is the text contained by the _first column_ of the selected **listitem**, without the colors.
 
 :::
@@ -213,6 +225,8 @@ playerid = 0, dialogid = YOUR_DIALOGID, response = 1, listitem = 0, inputtext = 
 playerid = 0, dialogid = YOUR_DIALOGID, response = 0, listitem = 1, inputtext = 'Sawnoff' (size: 7)
 ```
 
+---
+  
 ## Style 5: `DIALOG_STYLE_TABLIST_HEADERS`
 
 :::tip This style was added in **SA-MP 0.3.7** and will not work in earlier versions!
@@ -233,7 +247,8 @@ Showing:
 
 - **\t** creates a new column.
 - **\n** creates a new list item.
-- Color embedding resets after \n and \t. The first **info** row contains the header.
+- [Color embedding](colorslist#color-embedding) resets after **\n** and **\t**.
+- The first **info** row contains the header.
 
 :::
 
@@ -247,6 +262,7 @@ Item 1 Column 1\tItem 1 Column 2\tItem 1 Column 3\n\
 
 :::note
 
+- **listitem** is the number of the selected item, starting from **0**.
 - **inputtext** is the text contained by the _first column_ of the selected **listitem**, without the colors.
 
 :::

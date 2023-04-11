@@ -22,7 +22,7 @@ const CONTENT_PATH = "content";
 //
 // It returns essentially a matrix of all combinations of all locales and all
 // content pages. The result is a flattened list.
-export const getContentPaths = (subdir: string = ""): string[] => {
+export const getContentPaths = (subdir = ""): string[] => {
   const contents = getContentPathsForLocale(subdir);
   return getAllContentLocales()
     .map((locale: string) => contents.map((content) => `/${locale}${content}`))
@@ -31,8 +31,8 @@ export const getContentPaths = (subdir: string = ""): string[] => {
 
 // Gets a list of all content for a specific language
 export const getContentPathsForLocale = (
-  subdir: string = "",
-  locale: string = "en"
+  subdir = "",
+  locale = "en"
 ) =>
   glob
     .sync(join(CONTENT_PATH, locale, subdir, "**", "*.mdx"))
@@ -255,4 +255,12 @@ export const readLocaleDocs = async (
   }
 
   throw new Error(`Not found (${name})`);
+};
+
+// Gets the url for the corresponding docs page name and locale on Github.
+export const getDocsGithubUrl = (name: string, exists: boolean, locale ?: string) => {
+  const translation = locale === 'en' ? '' : `translations/${locale}/`;
+  const mode = exists ? "edit" : "new";
+  // TODO: are there ways for a new file to fill its content/title?
+  return `https://github.com/openmultiplayer/web/${mode}/master/docs/${translation}${name}.md`;
 };

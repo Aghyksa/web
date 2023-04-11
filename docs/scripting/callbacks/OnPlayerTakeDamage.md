@@ -10,13 +10,13 @@ tags: ["player"]
 
 This callback is called when a player takes damage.
 
-| Name     | Description                                                                                                   |
-| -------- | ------------------------------------------------------------------------------------------------------------- |
-| playerid | The ID of the player that took damage.                                                                        |
-| issuerid | The ID of the player that caused the damage. INVALID_PLAYER_ID if self-inflicted.                             |
-| amount   | The amount of damage the player took (health and armour combined).                                            |
-| weaponid | The ID of the weapon/reason for the damage.                                                                   |
-| bodypart | The body part that was hit. (NOTE: This parameter was added in 0.3z. Leave it out if using an older version!) |
+| Name     | Description                                                                                                                            |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| playerid | The ID of the player that took damage.                                                                                                 |
+| issuerid | The ID of the player that caused the damage. INVALID_PLAYER_ID if self-inflicted.                                                      |
+| amount   | The amount of damage the player took (health and armour combined).                                                                     |
+| weaponid | The ID of the weapon/reason for the damage.                                                                                            |
+| bodypart | The [body part](../resources/bodyparts) that was hit. (NOTE: This parameter was added in 0.3z. Leave it out if using an older version!) |
 
 ## Returns
 
@@ -74,4 +74,9 @@ GetPlayerHealth and GetPlayerArmour will return the old amounts of the player be
 
 :::
 
-## Related Functions
+## Related Callbacks
+
+The following callbacks might be useful, as they're related to this callback in one way or another. 
+
+- [OnPlayerGiveDamage](OnPlayerGiveDamage): This callback is called when a player gives damage. 
+- [OnPlayerWeaponShot](OnPlayerWeaponShot): This callback is called when a player fires a weapon. 

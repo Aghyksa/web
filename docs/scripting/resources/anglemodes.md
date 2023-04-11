@@ -5,12 +5,12 @@ description: SI unit constants for measuring angles.
 
 :::note
 
-To be used with [floatsin](../functions/Floatsin), [floatcos](../functions/Floatcos), or [floattan](../functions/Floattan).
+These angle modes are used by [floatsin](../functions/floatsin), [floatcos](../functions/floatcos), and [floattan](../functions/floattan).
 
 :::
 
-| Modes   |
-| ------- |
-| radian  |
-| degrees |
-| grades  |
+|  Mode   | Description |
+| ------- | ----------- |
+| radian  | The angle will be in radians. |
+| degrees | The angle will be in degrees. |
+| grades  | The angle will be in grades.  |

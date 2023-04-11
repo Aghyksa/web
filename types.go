@@ -2,13 +2,20 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"strings"
 
-	"github.com/tkrajina/typescriptify-golang-structs/typescriptify"
+	"github.com/Southclaws/supervillain"
 
-	"github.com/openmultiplayer/web/server/src/api/auth/discord"
-	"github.com/openmultiplayer/web/server/src/api/auth/github"
-	"github.com/openmultiplayer/web/server/src/db"
-	"github.com/openmultiplayer/web/server/src/web"
+	"github.com/openmultiplayer/web/app/resources/forum/post"
+	"github.com/openmultiplayer/web/app/resources/notification"
+	"github.com/openmultiplayer/web/app/resources/server"
+	"github.com/openmultiplayer/web/app/resources/user"
+	"github.com/openmultiplayer/web/app/services/docsindex"
+	"github.com/openmultiplayer/web/app/transports/api/auth/discord"
+	"github.com/openmultiplayer/web/app/transports/api/auth/github"
+	"github.com/openmultiplayer/web/internal/web"
 )
 
 // -
@@ -25,27 +32,36 @@ import (
 //
 // -
 
-func convert(prefix, out string, objs ...interface{}) {
-	t := typescriptify.New()
-	t.BackupDir = ""
-	t.Prefix = prefix
+func convert(name, prefix string, objs ...interface{}) {
+	out := fmt.Sprintf("frontend/src/types/_generated_%s.ts", name)
 
-	for _, i := range objs {
-		t.Add(i)
+	fmt.Println("Generating schemas for", out)
+
+	output := strings.Builder{}
+	output.WriteString(`import * as z from "zod"
+
+`)
+	for _, v := range objs {
+		output.WriteString(supervillain.StructToZodSchemaWithPrefix(prefix, v))
 	}
 
-	if err := t.ConvertToFile("frontend/src/types/" + out + ".ts"); err != nil {
-		panic(err.Error())
-	}
+	ioutil.WriteFile(
+		out,
+		[]byte(output.String()),
+		os.ModePerm,
+	)
 }
 
 func main() {
-	convert("API", "error", web.Error{})
-	convert("", "server", db.ServerModel{})
-	convert("", "user", db.UserModel{})
+	convert("Error", "API", web.Error{})
+	convert("Server", "", server.All{})
+	convert("User", "", user.User{})
+	convert("Forum", "", post.Post{})
+	convert("SearchResult", "", docsindex.SearchResults{})
+	convert("Notification", "", notification.Notification{})
 
-	convert("GitHub", "githubAuth", github.Link{}, github.Callback{})
-	convert("Discord", "discordAuth", discord.Link{}, discord.Callback{})
+	convert("GitHub", "", github.Link{}, github.Callback{})
+	convert("Discord", "", discord.Link{}, discord.Callback{})
 
 	fmt.Println("DONE")
 }

@@ -19,9 +19,8 @@
 </p>
 
 <p align="center">
-  An upcoming multiplayer mod for Grand Theft Auto: San Andreas that will be
-  fully backwards compatible with the existing multiplayer mod San Andreas
-  Multiplayer.
+  A multiplayer mod for Grand Theft Auto: San Andreas that is fully backwards
+  compatible with San Andreas Multiplayer.
 </p>
 
 <p align="center">
@@ -40,7 +39,7 @@ This monorepo contains the web services and documentation for open.mp and SA-MP.
 - `emails/` [MJML](https://mjml.io) email templates for account registration and other things.
 - `frontend/` [Next.js](https://nextjs.org) app for the https://open.mp site.
 - `prisma/` [Prisma](https://prisma.io/) database models for generating Go code and SQL migrations.
-- `server/` Backend API for server listings, accounts, etc.
+- `app/` Backend API for server listings, accounts, etc.
 
 ## Frontend Development
 
@@ -50,7 +49,7 @@ The only files that the frontend need that _are not_ in that directory are `docs
 
 ## Backend/Full Stack Development
 
-When working on the backend, the root of the repository is where you need to be. The server application will assume it's being run from the root, _not_ from within `server/`.
+When working on the backend, the root of the repository is where you need to be. The server application will assume it's being run from the root, _not_ from within `cmd/`.
 
 To start the API server, use [Taskfile](https://taskfile.dev) and run `task`, the default task is to build and run the API server.
 
@@ -69,3 +68,21 @@ The `.dev.yml` Compose configuration contains services that aren't secure or pro
 The frontend is deployed directly to [Vercel](https://vercel.com) from the `master` branch.
 
 The backend is deployed to a server from the `master` branch using the `docker-compose.yml` file. You can simulate a production deployment by running `docker-compose up`.
+
+### Uploading Assets
+
+We host large static assets such as images and videos on an S3-compatible object storage. This runs at `assets.open.mp` and you can use the task `upload-assets` to upload all public assets from `frontend/public`.
+
+The easiest way to do this is via the [Minio client](https://docs.min.io/docs/minio-client-quickstart-guide.html). Once installed, set up an alias called `omp`:
+
+```
+mc alias set omp https://assets.open.mp ACCESS_KEY SECRET_KEY
+```
+
+Replace the two keys with the real keys.
+
+Then run the task:
+
+```
+task upload-assets
+```

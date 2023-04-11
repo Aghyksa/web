@@ -1,33 +1,34 @@
 import React, { FunctionComponent } from "react";
 
-import { apiSSP, apiSWR } from "src/fetcher/fetcher";
-import { APIError } from "src/types/error";
-import { UserModel } from "src/types/user";
+import { api } from "src/fetcher/fetcher";
+import { User, UserSchema } from "src/types/_generated_User";
 
 type AuthenticationContext = {
   isAuthenticated: boolean;
   isLoading: boolean;
   setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  user?: User;
 };
 
 const AuthContext = React.createContext<AuthenticationContext>({
   isAuthenticated: false,
   isLoading: true,
-  setAuthenticated: (_: any) => {},
+  setAuthenticated: () => undefined,
+  user: undefined,
 });
 
 // to be used in _app.tsx where `authenticated` is set
 export const AuthProvider: FunctionComponent = ({ children }) => {
   const [isAuthenticated, setAuthenticated] = React.useState(false);
   const [isLoading, setLoading] = React.useState(true);
+  const [user, setUser] = React.useState<User | undefined>(undefined);
 
   React.useEffect(() => {
     const initializeAuth = async () => {
-      const response = await apiSSP<UserModel, APIError>("/users/self");
-
       try {
-        response.unwrap();
+        const user = await api("/users/self", { schema: UserSchema });
         setAuthenticated(true);
+        setUser(user);
       } catch (_) {
         setAuthenticated(false);
       }
@@ -42,6 +43,7 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
         isAuthenticated,
         isLoading,
         setAuthenticated,
+        user,
       }}
     >
       {children}
@@ -60,4 +62,8 @@ export function useAuth(): AuthenticationContext {
 export function useIsAuthenticated(): boolean {
   const { isAuthenticated } = useAuth();
   return isAuthenticated;
+}
+export function useIsAdmin(): boolean {
+  const { user } = useAuth();
+  return user?.admin ?? false;
 }

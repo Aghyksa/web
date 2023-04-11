@@ -16,7 +16,7 @@ This callback is called when a player gives damage to an actor.
 | damaged_actorid | The ID of the actor that received damage.             |
 | amount          | The amount of health/armour damaged_actorid has lost. |
 | weaponid        | The reason that caused the damage.                    |
-| bodypart        | The body part that was hit                            |
+| bodypart        | The [body part](../resources/bodyparts) that was hit   |
 
 ## Returns
 
@@ -50,7 +50,16 @@ This function does not get called if the actor is set invulnerable (WHICH IS BY 
 
 :::
 
+## Related Callbacks
+
+The following callbacks might be useful, as they're related to this callback in one way or another. 
+
+- [OnActorStreamOut](OnActorStreamOut): This callback is called when an actor is streamed out by a player's client.
+- [OnActorStreamIn](OnActorStreamOut): This callback is called when an actor is streamed in by a player's client.
+
 ## Related Functions
+
+The following functions might be useful, as they're related to this callback in one way or another.
 
 - [CreateActor](../functions/CreateActor): Create an actor (static NPC).
 - [SetActorInvulnerable](../functions/SetActorInvulnerable): Set actor invulnerable.
@@ -58,5 +67,3 @@ This function does not get called if the actor is set invulnerable (WHICH IS BY 
 - [GetActorHealth](../functions/GetActorHealth): Gets the health of an actor.
 - [IsActorInvulnerable](../functions/IsActorInvulnerable): Check if actor is invulnerable.
 - [IsValidActor](../functions/IsValidActor): Check if actor id is valid.
-- [OnActorStreamOut](OnActorStreamOut): Called when an actor is streamed out by a player.
-- [OnPlayerStreamIn](OnPlayerStreamIn): Called when a player streams in for another player.
